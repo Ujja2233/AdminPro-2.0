@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111426">
+  <title>AdminPro 3.0 | Business Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTHENTICATION -->
+<section id="authScreen" class="auth-screen">
+  <div class="auth-decoration auth-decoration-one"></div>
+  <div class="auth-decoration auth-decoration-two"></div>
+
+  <div class="auth-brand">
+    <span class="logo-icon">A</span>
+    <span>Admin<span class="logo-light">Pro</span></span>
+    <span class="version">3.0</span>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-heading">
+      <span class="eyebrow">BUSINESS INTELLIGENCE PLATFORM</span>
+      <h1 id="authTitle">Welcome back</h1>
+      <p id="authSubtitle">Sign in to continue to your workspace.</p>
+    </div>
+
+    <div id="authError" class="auth-message error hidden" role="alert"></div>
+    <div id="authSuccess" class="auth-message success hidden" role="status"></div>
+
+    <form id="loginForm" class="auth-form">
+      <label for="loginEmail">Email address</label>
+      <input id="loginEmail" type="email" autocomplete="email"
+        placeholder="you@example.com" required>
+
+      <label for="loginPassword">Password</label>
+      <div class="password-field">
+        <input id="loginPassword" type="password"
+          autocomplete="current-password" placeholder="Enter your password" required>
+        <button type="button" class="password-toggle" data-toggle="loginPassword">Show</button>
+      </div>
+
+      <div class="auth-options">
+        <label class="remember-label">
+          <input id="rememberMe" type="checkbox" checked>
+          Remember me
+        </label>
+        <button type="button" id="forgotPassword" class="text-btn">Forgot password?</button>
+      </div>
+
+      <button class="primary-btn auth-submit" id="loginSubmit" type="submit">
+        Sign in
+      </button>
+    </form>
+
+    <form id="signupForm" class="auth-form hidden">
+      <label for="signupName">Full name</label>
+      <input id="signupName" type="text" autocomplete="name"
+        placeholder="Your full name" minlength="2" required>
+
+      <label for="signupEmail">Email address</label>
+      <input id="signupEmail" type="email" autocomplete="email"
+        placeholder="you@example.com" required>
+
+      <label for="signupPassword">Password</label>
+      <div class="password-field">
+        <input id="signupPassword" type="password" autocomplete="new-password"
+          placeholder="At least 8 characters" minlength="8" required>
+        <button type="button" class="password-toggle" data-toggle="signupPassword">Show</button>
+      </div>
+
+      <label for="confirmPassword">Confirm password</label>
+      <input id="confirmPassword" type="password" autocomplete="new-password"
+        placeholder="Re-enter your password" minlength="8" required>
+
+      <label class="terms-label">
+        <input id="acceptTerms" type="checkbox" required>
+        I agree to use this dashboard responsibly.
+      </label>
+
+      <button class="primary-btn auth-submit" id="signupSubmit" type="submit">
+        Create account
+      </button>
+    </form>
+
+    <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+
+    <div class="social-buttons">
+      <button type="button" class="social-btn" id="googleLogin">
+        <span class="google-mark">G</span> Google
+      </button>
+      <button type="button" class="social-btn" id="facebookLogin">
+        <span class="facebook-mark">f</span> Facebook
+      </button>
+    </div>
+
+    <p class="auth-switch" id="loginSwitch">
+      Don't have an account?
+      <button type="button" class="text-btn" id="showSignup">Create account</button>
+    </p>
+    <p class="auth-switch hidden" id="signupSwitch">
+      Already have an account?
+      <button type="button" class="text-btn" id="showLogin">Sign in</button>
+    </p>
+
+    <p class="auth-footnote">Secure authentication powered by Firebase.</p>
+  </div>
+</section>
+
+<!-- PROTECTED DASHBOARD -->
+<div class="app hidden" id="dashboardApp">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="logo-icon">A</span>
+      <span>Admin<span class="logo-light">Pro</span></span>
+      <span class="version">3.0</span>
+    </div>
+
+    <p class="menu-label">WORKSPACE</p>
+    <nav class="navigation">
+      <a href="#overview" class="nav-link active" data-page="overview"><span>▦</span> Overview</a>
+      <a href="#analytics" class="nav-link" data-page="analytics"><span>◷</span> Analytics</a>
+      <a href="#customers" class="nav-link" data-page="customers"><span>♙</span> Customers</a>
+      <a href="#products" class="nav-link" data-page="products"><span>◇</span> Inventory</a>
+      <a href="#orders" class="nav-link" data-page="orders"><span>▤</span> Orders</a>
+
+      <p class="menu-label secondary-label">BUSINESS TOOLS</p>
+      <a href="#reports" class="nav-link" data-page="reports"><span>▧</span> Reports</a>
+      <a href="#notifications" class="nav-link" data-page="notifications">
+        <span>♧</span> Notifications <span class="nav-count" id="navNotificationCount">0</span>
+      </a>
+      <a href="#assistant" class="nav-link" data-page="assistant"><span>✧</span> AI Assistant <span class="ai-label">AI</span></a>
+      <a href="#settings" class="nav-link" data-page="settings"><span>⚙</span> Settings</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="upgrade-card">
+        <span>✦ Premium Workspace</span>
+        <p>Manage your business smarter with AdminPro.</p>
+        <div class="upgrade-progress"><span></span></div>
+        <small>Version 3.0 · Firebase enabled</small>
+      </div>
+
+      <div class="profile">
+        <div class="avatar" id="sidebarAvatar">U</div>
+        <div class="profile-info">
+          <strong id="sidebarUserName">User</strong>
+          <small id="sidebarUserEmail">user@email.com</small>
+        </div>
+        <button class="profile-more" id="profileMenuBtn" aria-label="Profile menu">•••</button>
+      </div>
+
+      <div id="profileMenu" class="profile-menu hidden">
+        <div class="profile-menu-info">
+          <strong id="profileMenuName">User</strong>
+          <small id="profileMenuEmail">user@email.com</small>
+        </div>
+        <button id="profileSettingsBtn">My profile</button>
+        <button id="logoutBtn" class="logout-option">↪ Sign out</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="top-left">
+        <button class="icon-btn mobile-menu" id="menuBtn">☰</button>
+        <div>
+          <h2 id="pageTitle">Dashboard Overview</h2>
+          <p class="subtitle" id="pageSubtitle">Your business overview at a glance.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="globalSearch" placeholder="Search current page...">
+        </div>
+        <button class="icon-btn" id="themeBtn" title="Toggle theme">☾</button>
+        <button class="icon-btn notification-btn" id="notificationBtn" title="Notifications">
+          ♧ <span class="notification-dot"></span>
+        </button>
+        <button class="top-avatar" id="topAvatar" title="Open profile">U</button>
+      </div>
+    </header>
+
+    <div id="quickNotifications" class="notification-panel hidden">
+      <div class="row-between">
+        <h3>Recent notifications</h3>
+        <button class="text-btn" id="openAllNotifications">View all</button>
+      </div>
+      <div id="quickNotificationList"></div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="page-section" id="page-overview">
+      <div class="welcome-row">
+        <div>
+          <span class="eyebrow">BUSINESS INTELLIGENCE</span>
+          <h1>Welcome, <span id="welcomeName">User</span> 👋</h1>
+          <p>Here's what's happening with your business today.</p>
+        </div>
+        <div class="welcome-actions">
+          <select id="dateFilter">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">This year</option>
+          </select>
+          <button class="primary-btn" data-action="pdf">↓ Export Report</button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card purple">
+          <div class="stat-top"><span>Total Revenue</span><span class="stat-icon">₹</span></div>
+          <h2 id="revenue">₹0</h2>
+          <div class="stat-bottom"><span>Completed sales</span></div>
+          <div class="card-decoration"></div>
+        </article>
+        <article class="stat-card blue">
+          <div class="stat-top"><span>Total Customers</span><span class="stat-icon">♙</span></div>
+          <h2 id="customers">0</h2>
+          <div class="stat-bottom"><span>Registered customers</span></div>
+          <div class="card-decoration"></div>
+        </article>
+        <article class="stat-card orange">
+          <div class="stat-top"><span>Total Orders</span><span class="stat-icon">▤</span></div>
+          <h2 id="totalOrders">0</h2>
+          <div class="stat-bottom"><span>All transactions</span></div>
+          <div class="card-decoration"></div>
+        </article>
+        <article class="stat-card green">
+          <div class="stat-top"><span>Conversion Rate</span><span class="stat-icon">％</span></div>
+          <h2 id="conversion">4.85%</h2>
+          <div class="stat-bottom"><span>Demo metric</span></div>
+          <div class="card-decoration"></div>
+        </article>
+      </div>
+
+      <div class="insight-banner">
+        <div class="insight-icon">✧</div>
+        <div><strong>Business Intelligence</strong><p id="overviewInsight">Your business overview is ready.</p></div>
+        <button class="text-btn" data-page="assistant">Ask AI →</button>
+      </div>
+
+      <div class="charts-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div><h3>Revenue Analytics</h3><p class="subtitle">Completed revenue performance</p></div>
+            <span class="tag">YOUR DATA</span>
+          </div>
+          <div class="chart-summary"><strong id="chartTotal">₹0</strong><span class="positive">Revenue</span></div>
+          <canvas id="revenueChart"></canvas>
+        </section>
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Sales Distribution</h3><p class="subtitle">By product category</p></div></div>
+          <canvas id="salesChart"></canvas>
+          <div class="legend" id="salesLegend"></div>
+        </section>
+      </div>
+
+      <div class="dashboard-bottom">
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Recent Orders</h3><p class="subtitle">Latest transactions</p></div>
+            <button class="text-btn" data-page="orders">View all →</button>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>ORDER</th><th>CUSTOMER</th><th>AMOUNT</th><th>STATUS</th></tr></thead>
+            <tbody id="recentOrderTable"></tbody></table>
+          </div>
+        </section>
+        <section class="panel goal-panel">
+          <div class="panel-heading"><div><h3>Monthly Sales Goal</h3><p class="subtitle">Revenue target</p></div><span>🎯</span></div>
+          <h2 id="goalRevenue">₹0</h2><p class="subtitle">of ₹5,00,000 target</p>
+          <div class="progress-track"><span id="goalProgress"></span></div>
+          <div class="row-between goal-label"><span id="goalPercent">0% achieved</span><span>₹5,00,000</span></div>
+          <button class="outline-btn" data-page="analytics">View performance</button>
+        </section>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section class="page-section hidden" id="page-analytics">
+      <div class="section-intro">
+        <div><span class="eyebrow">DATA INTELLIGENCE</span><h1>Advanced Analytics</h1><p>Understand business performance through data.</p></div>
+        <button class="primary-btn" data-action="excel">Export Excel</button>
+      </div>
+      <div class="stats-grid compact-stats">
+        <article class="mini-stat"><span>Completed Revenue</span><strong id="analyticsRevenue">₹0</strong></article>
+        <article class="mini-stat"><span>Average Order Value</span><strong id="averageOrder">₹0</strong></article>
+        <article class="mini-stat"><span>Pending Orders</span><strong id="pendingOrders">0</strong></article>
+        <article class="mini-stat"><span>Low Stock Products</span><strong id="lowStockCount">0</strong></article>
+      </div>
+      <div class="charts-grid">
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Revenue Trends</h3><p class="subtitle">Selected date range</p></div>
+            <select id="analyticsFilter"><option value="7">7 days</option><option value="30" selected>30 days</option><option value="90">90 days</option><option value="365">12 months</option></select>
+          </div>
+          <canvas id="analyticsChart"></canvas>
+        </section>
+        <section class="panel"><div class="panel-heading"><div><h3>Business Health</h3><p class="subtitle">Operational overview</p></div></div><div id="healthMetrics" class="health-list"></div></section>
+      </div>
+      <section class="panel"><div class="panel-heading"><h3>Category Performance</h3></div><div class="category-bars" id="categoryBars"></div></section>
+    </section>
+
+    <!-- CUSTOMERS -->
+    <section class="page-section hidden" id="page-customers">
+      <div class="section-intro"><div><span class="eyebrow">RELATIONSHIP MANAGEMENT</span><h1>Customers</h1><p>Manage customer profiles and purchase activity.</p></div>
+        <button class="primary-btn" id="addCustomerBtn">+ Add Customer</button></div>
+      <div class="mini-stat customer-total"><span>Total registered customers</span><strong id="customerCount">0</strong></div>
+      <section class="panel">
+        <div class="panel-heading"><div><h3>Customer Directory</h3><p class="subtitle">Search and manage customers</p></div><input class="table-search" id="customerSearch" placeholder="Search customers..."></div>
+        <div class="table-wrap"><table><thead><tr><th>CUSTOMER</th><th>EMAIL</th><th>PHONE</th><th>ORDERS</th><th>SPENT</th><th>ACTIONS</th></tr></thead><tbody id="customerTable"></tbody></table></div>
+      </section>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="page-section hidden" id="page-products">
+      <div class="section-intro"><div><span class="eyebrow">PRODUCT MANAGEMENT</span><h1>Inventory</h1><p>Manage products, prices and stock levels.</p></div>
+        <button class="primary-btn" id="addProductBtn">+ Add Product</button></div>
+      <div class="stats-grid compact-stats">
+        <article class="mini-stat"><span>Total Products</span><strong id="productCount">0</strong></article>
+        <article class="mini-stat"><span>Total Stock Units</span><strong id="stockCount">0</strong></article>
+        <article class="mini-stat"><span>Low Stock Alerts</span><strong id="stockAlerts">0</strong></article>
+        <article class="mini-stat"><span>Inventory Value</span><strong id="stockValue">₹0</strong></article>
+      </div>
+      <section class="panel"><div class="panel-heading"><div><h3>Product Catalogue</h3><p class="subtitle">Inventory and stock control</p></div><input class="table-search" id="productSearch" placeholder="Search products..."></div>
+        <div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>CATEGORY</th><th>PRICE</th><th>STOCK</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="productTable"></tbody></table></div>
+      </section>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="page-section hidden" id="page-orders">
+      <div class="section-intro"><div><span class="eyebrow">TRANSACTION MANAGEMENT</span><h1>Orders</h1><p>Manage customer transactions and order status.</p></div>
+        <button class="primary-btn" id="addOrderBtn">+ Add Order</button></div>
+      <section class="panel"><div class="panel-heading"><div><h3>All Orders</h3><p class="subtitle">Manage recent transactions</p></div><input class="table-search" id="orderSearch" placeholder="Search orders..."></div>
+        <div class="table-wrap"><table><thead><tr><th>ORDER ID</th><th>CUSTOMER</th><th>PRODUCT</th><th>DATE</th><th>AMOUNT</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="orderTable"></tbody></table></div>
+      </section>
+    </section>
+
+    <!-- REPORTS -->
+    <section class="page-section hidden" id="page-reports">
+      <div class="section-intro"><div><span class="eyebrow">BUSINESS DOCUMENTS</span><h1>Reports Center</h1><p>Generate and download business reports.</p></div></div>
+      <div class="report-grid">
+        <article class="report-card"><div class="report-icon purple-icon">PDF</div><h3>PDF Report</h3><p>Generate a print-ready report and save it as PDF.</p><button class="primary-btn" data-action="pdf">Generate PDF</button></article>
+        <article class="report-card"><div class="report-icon green-icon">XLS</div><h3>Excel Report</h3><p>Export customers, products, orders and analytics.</p><button class="primary-btn" data-action="excel">Download Excel</button></article>
+        <article class="report-card"><div class="report-icon blue-icon">CSV</div><h3>Orders CSV</h3><p>Download order transactions in CSV format.</p><button class="primary-btn" data-action="csv">Download CSV</button></article>
+      </div>
+      <section class="panel report-summary"><h3>Report summary</h3><div id="reportSummary"></div></section>
+    </section>
+
+    <!-- NOTIFICATIONS -->
+    <section class="page-section hidden" id="page-notifications">
+      <div class="section-intro"><div><span class="eyebrow">ACTIVITY CENTER</span><h1>Notifications</h1><p>Important business events.</p></div><button class="outline-btn" id="markAllRead">Mark all as read</button></div>
+      <section class="panel"><div class="panel-heading"><h3>All notifications</h3><button class="text-btn" id="clearNotifications">Clear all</button></div><div id="notificationList" class="notification-list"></div></section>
+    </section>
+
+    <!-- ASSISTANT -->
+    <section class="page-section hidden" id="page-assistant">
+      <div class="section-intro"><div><span class="eyebrow">SMART BUSINESS INTELLIGENCE</span><h1>AI Business Assistant ✧</h1><p>Ask questions about your dashboard data.</p></div></div>
+      <div class="assistant-layout">
+        <section class="panel assistant-panel">
+          <div class="assistant-heading"><div class="ai-orb">✧</div><div><h3>AdminPro Intelligence</h3><span class="online-dot">● Demo assistant online</span></div></div>
+          <div id="chatMessages" class="chat-messages"><div class="chat-bubble bot">Hello! I can analyze your revenue, orders, customers and inventory. What would you like to know?</div></div>
+          <div class="suggestions">
+            <button data-question="What is my total revenue?">Total revenue</button>
+            <button data-question="Which products have low stock?">Low stock</button>
+            <button data-question="Give me a business summary">Business summary</button>
+            <button data-question="How many orders are pending?">Pending orders</button>
+          </div>
+          <form id="chatForm" class="chat-form"><input id="chatInput" placeholder="Ask about your business..." autocomplete="off" required><button class="primary-btn">Send ↑</button></form>
+          <p class="disclaimer">Local rule-based demo assistant. No external AI model is connected.</p>
+        </section>
+        <section class="panel assistant-side"><h3>Business snapshot</h3><div id="assistantSnapshot"></div><button class="outline-btn" data-page="analytics">View analytics</button></section>
+      </div>
+    </section>
+
+    <!-- SETTINGS / PROFILE -->
+    <section class="page-section hidden" id="page-settings">
+      <div class="section-intro"><div><span class="eyebrow">ACCOUNT & PREFERENCES</span><h1>My Profile & Settings</h1><p>Manage your account and dashboard preferences.</p></div></div>
+      <section class="panel settings-panel">
+        <div class="profile-large"><div class="avatar large-avatar" id="settingsAvatar">U</div><div><h3 id="settingsName">User</h3><p class="subtitle" id="settingsEmail">user@email.com</p><span class="tag" id="authProviderLabel">Firebase account</span></div></div>
+        <hr>
+        <h3>Account information</h3>
+        <p class="subtitle">Your identity is managed by Firebase Authentication.</p>
+        <div class="profile-detail"><span>Display name</span><strong id="profileDisplayName">—</strong></div>
+        <div class="profile-detail"><span>Email</span><strong id="profileDisplayEmail">—</strong></div>
+        <div class="profile-detail"><span>Email verified</span><strong id="profileVerified">—</strong></div>
+        <div class="profile-detail"><span>Sign-in provider</span><strong id="profileProvider">—</strong></div>
+        <button class="outline-btn" id="refreshProfileBtn">Refresh profile</button>
+        <hr>
+        <h3>Appearance</h3><p class="subtitle">Switch between light and dark workspace.</p>
+        <button class="outline-btn" id="settingsTheme">Toggle theme</button>
+        <hr>
+        <h3>Data management</h3><p class="subtitle">Business records are stored locally in this browser, separately for each signed-in account.</p>
+        <button class="outline-btn" id="backupBtn">Download JSON Backup</button>
+        <button class="danger-btn" id="resetBtn">Reset My Demo Data</button>
+        <hr>
+        <h3>Security</h3><p class="subtitle">Sign out of your current account on this browser.</p>
+        <button class="danger-btn" id="settingsLogoutBtn">Sign out</button>
+      </section>
+    </section>
+
+  </main>
+</div>
+
+<!-- CUSTOMER MODAL -->
+<div class="modal-overlay hidden" id="customerModal"><div class="modal">
+  <div class="row-between"><h2 id="customerModalTitle">Add Customer</h2><button class="close-btn" data-close="customerModal">✕</button></div>
+  <form id="customerForm">
+    <input type="hidden" id="customerId">
+    <label>Full Name</label><input id="customerName" required>
+    <label>Email</label><input id="customerEmail" type="email" required>
+    <label>Phone</label><input id="customerPhone" required>
+    <button class="primary-btn full-btn">Save Customer</button>
+  </form>
+</div></div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay hidden" id="productModal"><div class="modal">
+  <div class="row-between"><h2 id="productModalTitle">Add Product</h2><button class="close-btn" data-close="productModal">✕</button></div>
+  <form id="productForm">
+    <input type="hidden" id="productId">
+    <label>Product Name</label><input id="productName" required>
+    <label>Category</label><select id="productCategory"><option>Electronics</option><option>Fashion</option><option>Accessories</option><option>Home</option><option>Other</option></select>
+    <label>Price (₹)</label><input id="productPrice" type="number" min="1" required>
+    <label>Stock Quantity</label><input id="productStock" type="number" min="0" required>
+    <button class="primary-btn full-btn">Save Product</button>
+  </form>
+</div></div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay hidden" id="orderModal"><div class="modal">
+  <div class="row-between"><h2>Add New Order</h2><button class="close-btn" data-close="orderModal">✕</button></div>
+  <form id="orderForm">
+    <label>Customer</label><select id="orderCustomer" required></select>
+    <label>Product</label><select id="orderProduct" required></select>
+    <label>Amount (₹)</label><input type="number" id="orderAmount" min="1" required>
+    <label>Status</label><select id="orderStatus"><option>Pending</option><option>Processing</option><option>Completed</option></select>
+    <button class="primary-btn full-btn">Save Order</button>
+  </form>
+</div></div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
+
+
+
